@@ -42,8 +42,19 @@ struct ContentView: View {
 					.offset(y: -300)
 
 				StockListView(stocks: filteredStocks)
-					.offset(y: 150)
-				
+					.offset(y: 160)
+
+				NewsArticleView(newsArticles: self.stockListVM.news, onDragBegin: { value in
+					self.stockListVM.dragOffset = value.translation
+				}, onDragEnd: { value in
+					if value.translation.height < 0 {
+						self.stockListVM.dragOffset = CGSize(width: 0, height: 100)
+					} else {
+						self.stockListVM.dragOffset = CGSize(width: 0, height: 690)
+					}
+				})
+					.animation(.spring())
+					.offset(y: self.stockListVM.dragOffset.height)
 
 			}
 
